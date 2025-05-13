@@ -1,35 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+
+  const [actors, setActors] = useState([]);
+
+  const fetchActors = () => {
+    axios.get("https://lanciweb.github.io/demo/api/actors/").then(res => setActors(res.data)).catch(error => console.error("Errore di caricamento Attori ", error));
+  }
+
+  useEffect(() => {
+    fetchActors();
+  }, [])
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="container">
+        <header className='text-center my-4'>
+          <h1>Cast Fetching</h1>
+        </header>
+
+        <main>
+          <div className="row justify-content-center">
+            <div className="col-12 col-md-6 text-center">
+              <h3>Attori</h3>
+              <div className="row g-3">
+                {actors.map(actor => (
+                  <div
+                    className="col-12"
+                    key={`actor-${actor.id}`}
+                  >
+                    <div className="card d-flex">
+                      <div className="act-image">
+                        <img
+                          src={actor.image}
+                          alt={`actor ${actor.name}`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+    
+            <div className="col-12 col-md-6 text-center">
+              <h3>Attrici</h3>
+            </div>
+          </div>
+        </main>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
-
-export default App
