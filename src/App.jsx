@@ -5,15 +5,24 @@ import { useState, useEffect } from 'react';
 const App = () => {
 
   const [actors, setActors] = useState([]);
+  const [actresses, setActresses] = useState([]);
 
   const fetchActors = () => {
     axios.get("https://lanciweb.github.io/demo/api/actors/").then(res => setActors(res.data)).catch(error => console.error("Errore di caricamento Attori ", error));
   }
 
+  const fetchActresses = () => {
+    axios.get("https://lanciweb.github.io/demo/api/actresses/").then(res => setActresses(res.data)).catch(error => console.error("Errore di caricamento Attori ", error));
+  }
+  
   useEffect(() => {
     fetchActors();
   }, [])
 
+  useEffect(() => {
+    fetchActresses();
+  }, [])
+  
   return (
     <>
       <div className="container">
@@ -47,6 +56,23 @@ const App = () => {
     
             <div className="col-12 col-md-6 text-center">
               <h3>Attrici</h3>
+              <div className="row g-3">
+                {actresses.map(actress => (
+                  <div
+                    className="col-12"
+                    key={`actress-${actress.id}`}
+                  >
+                    <div className="card d-flex">
+                      <div className="act-image">
+                        <img
+                          src={actress.image}
+                          alt={`actress ${actress.name}`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </main>
